@@ -1,0 +1,74 @@
+<div class="base-page">
+  <mat-card class="base-card">
+    <mat-card-title>
+      <h1>Stonefish - детектор фишинговых сайтов</h1>
+    </mat-card-title>
+    <mat-card-subtitle>
+      <h2>Быстрая проверка подозрительных сайтов без смс и регистрации</h2>
+    </mat-card-subtitle>
+  </mat-card>
+  <mat-card class="base-card">
+    <mat-card-title>
+      <h2>Для проверки введите URL</h2>
+    </mat-card-title>
+    <mat-card-content>
+      <div>
+        <mat-form-field appearance="outline" class="search-input">
+          <input matInput placeholder="Введите URL" #url>
+          <button matSuffix mat-icon-button (click)="analyzeUrl(url.value)">
+            <mat-icon>search</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+    <mat-card-footer>
+      <mat-progress-bar mode="query" *ngIf="analyzeProgressOn"></mat-progress-bar>
+    </mat-card-footer>
+  </mat-card>
+  <mat-card *ngIf="results && results.complete" class="base-card">
+    <mat-card-content>
+      <mat-grid-list cols="12" rowHeight="60px">
+        <mat-grid-tile [colspan]="3"><h2>Вердикт</h2></mat-grid-tile>
+        <mat-grid-tile [colspan]="3"><h2>Общая оценка</h2></mat-grid-tile>
+        <mat-grid-tile [colspan]="3"><h2>Взвешенная оценка</h2></mat-grid-tile>
+        <mat-grid-tile [colspan]="3"><h2>Итог</h2></mat-grid-tile>
+        <mat-grid-tile [colspan]="3">
+          <h3 [className]="getVerdictColorClassName(results.outcome.score)">{{ getVerdictText(results.outcome.score) }}</h3>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="3">
+          <h3>{{ results.outcome.points | number: '1.0-0' }} / {{ results.outcome.points_max | number: '1.0-0'}}</h3>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="3">
+          <h3>{{ results.outcome.result | number: '1.0-0' }} / {{ results.outcome.result_max | number: '1.0-0' }}</h3>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="3">
+          <h3 [className]="getVerdictColorClassName(results.outcome.score)">{{ results.outcome.score | number: '1.0-0' }} / 100</h3>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="base-card" *ngIf="results">
+    <mat-card-content *ngIf="results">
+      <mat-grid-list cols="12" rowHeight="60px">
+        <mat-grid-tile [colspan]="2"><h3>Анализатор</h3></mat-grid-tile>
+        <mat-grid-tile [colspan]="7"><h3>Описание анализатор</h3></mat-grid-tile>
+        <mat-grid-tile [colspan]="1"><h3>Статус</h3></mat-grid-tile>
+        <mat-grid-tile [colspan]="2"><h3>Оцека</h3></mat-grid-tile>
+      </mat-grid-list>
+      <mat-grid-list cols="12" rowHeight="40px" *ngFor="let detail of results.details">
+        <mat-grid-tile [colspan]="2">
+          <h4>{{ detail.name }}</h4>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="7">
+          <h4>{{ detail.description }}</h4>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1">
+          <mat-icon [color]="detail.success ? 'accent' : 'warn'">{{ detail.success ? 'done' : 'error_outline' }}</mat-icon>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="2">
+          <mat-progress-bar mode="determinate" [value]="detail.points" [color]="detail.points > 50 ? 'accent' : 'warn'" *ngIf="detail.success"></mat-progress-bar>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-card-content>
+  </mat-card>
+</div>
