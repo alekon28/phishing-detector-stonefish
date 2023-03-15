@@ -1,0 +1,253 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "FastAPI",
+        "version": "0.1.0"
+    },
+    "paths": {
+        "/api/v1/analyze": {
+            "post": {
+                "summary": "Analyze",
+                "description": "The method starts the site analysis process",
+                "operationId": "analyze_api_v1_analyze_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AnalyzeRequestModel"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnalyzeResponseModel"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/result": {
+            "post": {
+                "summary": "Get Result",
+                "description": "The method returns the result of the analysis",
+                "operationId": "get_result_api_v1_result_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ResultRequestModel"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultResponseModel"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AnalyzeRequestModel": {
+                "title": "AnalyzeRequestModel",
+                "required": ["url"],
+                "type": "object",
+                "properties": {
+                    "url": {
+                        "title": "Url",
+                        "type": "string"
+                    }
+                },
+                "description": "Analyze request model "
+            },
+            "AnalyzeResponseModel": {
+                "title": "AnalyzeResponseModel",
+                "required": ["session_id"],
+                "type": "object",
+                "properties": {
+                    "session_id": {
+                        "title": "Session Id",
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                },
+                "description": "Analyze response model "
+            },
+            "AnalyzerVerdictModel": {
+                "title": "AnalyzerVerdictModel",
+                "required": ["factor", "success", "name", "description"],
+                "type": "object",
+                "properties": {
+                    "points": {
+                        "title": "Points",
+                        "type": "integer"
+                    },
+                    "factor": {
+                        "title": "Factor",
+                        "type": "number"
+                    },
+                    "result": {
+                        "title": "Result",
+                        "type": "number"
+                    },
+                    "success": {
+                        "title": "Success",
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "title": "Name",
+                        "type": "string"
+                    },
+                    "description": {
+                        "title": "Description",
+                        "type": "string"
+                    }
+                },
+                "description": "Analyzer verdict model "
+            },
+            "AnalyzersOutcomeModel": {
+                "title": "AnalyzersOutcomeModel",
+                "type": "object",
+                "properties": {
+                    "points": {
+                        "title": "Points",
+                        "type": "integer"
+                    },
+                    "points_max": {
+                        "title": "Points Max",
+                        "type": "integer"
+                    },
+                    "result": {
+                        "title": "Result",
+                        "type": "number"
+                    },
+                    "result_max": {
+                        "title": "Result Max",
+                        "type": "number"
+                    },
+                    "score": {
+                        "title": "Score",
+                        "type": "number"
+                    }
+                },
+                "description": "Analyzer outcome model "
+            },
+            "HTTPValidationError": {
+                "title": "HTTPValidationError",
+                "type": "object",
+                "properties": {
+                    "detail": {
+                        "title": "Detail",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        }
+                    }
+                }
+            },
+            "ResultRequestModel": {
+                "title": "ResultRequestModel",
+                "required": ["session_id"],
+                "type": "object",
+                "properties": {
+                    "session_id": {
+                        "title": "Session Id",
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                },
+                "description": "Result request model "
+            },
+            "ResultResponseModel": {
+                "title": "ResultResponseModel",
+                "required": ["url", "complete", "details", "outcome"],
+                "type": "object",
+                "properties": {
+                    "url": {
+                        "title": "Url",
+                        "type": "string"
+                    },
+                    "complete": {
+                        "title": "Complete",
+                        "type": "boolean"
+                    },
+                    "details": {
+                        "title": "Details",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AnalyzerVerdictModel"
+                        }
+                    },
+                    "outcome": {
+                        "$ref": "#/components/schemas/AnalyzersOutcomeModel"
+                    }
+                },
+                "description": "Result response model "
+            },
+            "ValidationError": {
+                "title": "ValidationError",
+                "required": ["loc", "msg", "type"],
+                "type": "object",
+                "properties": {
+                    "loc": {
+                        "title": "Location",
+                        "type": "array",
+                        "items": {
+                            "anyOf": [{
+                                "type": "string"
+                            }, {
+                                "type": "integer"
+                            }]
+                        }
+                    },
+                    "msg": {
+                        "title": "Message",
+                        "type": "string"
+                    },
+                    "type": {
+                        "title": "Error Type",
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
