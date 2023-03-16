@@ -17,6 +17,7 @@ from stonefish.analyzers import (
     LevenshteinDistanceAnalyzer,
     DigitsCountAnalyzer,
     SubDomainsCountAnalyzer,
+    PhishingFrameworkAnalyzer,
 )
 
 
@@ -30,6 +31,7 @@ class Utils:
             LevenshteinDistanceAnalyzer,
             DigitsCountAnalyzer,
             SubDomainsCountAnalyzer,
+            PhishingFrameworkAnalyzer,
         ]
         self.redis = RedisClient()
 

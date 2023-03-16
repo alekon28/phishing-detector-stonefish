@@ -16,7 +16,7 @@ class PhishingFrameworkAnalyzer(BaseAnalyzer):
         """ Method execute analyzer and return a points from 1 to 100 """
         points = 0
         try:
-            requests.get(f'{self.url.scheme}://{self.url.hostname}:3333/')
+            requests.get(f'{self.url.scheme}://{self.url.hostname}:3333/', timeout=2)
         except Exception as err:
             points = 1
         finally:
