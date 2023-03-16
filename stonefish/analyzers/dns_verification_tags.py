@@ -1,16 +1,16 @@
 """ Module contain a DNS verification tags analyzer """
-from typing import List
 
 from dns import resolver, rdatatype
 
 from stonefish.analyzers.base import BaseAnalyzer
+from stonefish.analyzers.normalizers import ThNormalizer
 
 
 class DnsVerificationTagsAnalyzer(BaseAnalyzer):
     """ DNS verification tags analyzer """
     name = 'DNS верификация'
     description = 'Проверка наличие тегов верификации'
-    factor = 1
+    normalizer = ThNormalizer(shift=0, factor=0.8)
 
     def execute(self) -> int:
         """ Method execute analyzer and return a points """
@@ -23,7 +23,4 @@ class DnsVerificationTagsAnalyzer(BaseAnalyzer):
         for tag in verification_tags:
             if tag in '$$$'.join([str(record) for record in answer.rrset or []]):
                 intersection_counter += 1
-
-        if intersection_counter > 4:
-            intersection_counter = 4
-        return intersection_counter * 20 + 20
+        return intersection_counter

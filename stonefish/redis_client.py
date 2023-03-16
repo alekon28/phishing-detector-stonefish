@@ -10,6 +10,6 @@ class RedisClient:
     def __init__(self):
         self.client = Redis(
             db=0,
-            host=os.environ.get('REDIS_HOST'),
-            port=int(os.environ.get('REDIS_PORT'))
+            host=os.environ.get('REDIS_HOST') or 'localhost',
+            port=int(os.environ.get('REDIS_PORT') or 6379)
         )

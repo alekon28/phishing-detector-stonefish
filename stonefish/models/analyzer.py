@@ -6,7 +6,7 @@ from pydantic import BaseModel
 class AnalyzerVerdictModel(BaseModel):
     """ Analyzer verdict model """
     points: int = None
-    factor: float
+    weight: float
     result: float = None
     success: bool
     name: str

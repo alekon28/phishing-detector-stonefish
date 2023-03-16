@@ -62,19 +62,20 @@ class Utils:
 
     def _make_outcome(self, results: ResultResponseModel):
         """ Method return outcome """
-        points_sum, result_sum, factor_sum, success_completed = 0, 0, 0, 0
+        result_sum, result_sum_max, result_sum_weight, result_sum_weight_max, success_completed = 0, 0, 0, 0, 0
         for res in results.details:
             if res.success:
-                points_sum += res.points
                 result_sum += res.result
-                factor_sum += res.factor
+                result_sum_max += 1
+                result_sum_weight += res.result * res.weight
+                result_sum_weight_max += 1 * res.weight
                 success_completed += 1
         return AnalyzersOutcomeModel(
-            points=points_sum if success_completed > 0 else 0,
-            points_max=100 * success_completed if success_completed > 0 else 0,
-            result=result_sum if success_completed > 0 else 0,
-            result_max=100 * factor_sum if success_completed > 0 else 0,
-            score=result_sum / (100 * factor_sum) * 100 if success_completed > 0 else 0
+            points=result_sum * 100 if success_completed > 0 else 0,
+            points_max=result_sum_max * 100 if success_completed > 0 else 0,
+            result=result_sum_weight * 100 if success_completed > 0 else 0,
+            result_max=result_sum_weight_max * 100 if success_completed > 0 else 0,
+            score=result_sum_weight / result_sum_weight_max * 100 if success_completed > 0 else 0
         )
 
     def _is_valid_url(self, url):

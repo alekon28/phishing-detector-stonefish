@@ -2,7 +2,7 @@
 
 export interface IAnalyzerVerdictModel {
     points: number
-    factor: number
+    weight: number
     result: number
     success: boolean
     name: string

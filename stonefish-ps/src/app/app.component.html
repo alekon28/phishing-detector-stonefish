@@ -66,7 +66,7 @@
           <mat-icon [color]="detail.success ? 'accent' : 'warn'">{{ detail.success ? 'done' : 'error_outline' }}</mat-icon>
         </mat-grid-tile>
         <mat-grid-tile [colspan]="2">
-          <mat-progress-bar mode="determinate" [value]="detail.points" [color]="detail.points > 50 ? 'accent' : 'warn'" *ngIf="detail.success"></mat-progress-bar>
+          <mat-progress-bar mode="determinate" [value]="detail.result * 100" [color]="detail.result > 0.5 ? 'accent' : 'warn'" *ngIf="detail.success"></mat-progress-bar>
         </mat-grid-tile>
       </mat-grid-list>
     </mat-card-content>

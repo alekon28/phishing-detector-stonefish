@@ -1,19 +1,20 @@
 """ Module contain a TLS analyzer """
 
 from stonefish.analyzers.base import BaseAnalyzer
+from stonefish.analyzers.normalizers import BinaryStepNormalizer
 
 
 class TLSAnalyzer(BaseAnalyzer):
     """ TLS analyzer """
     name = 'Проверка SSL'
     description = 'Анализатор проверяет использование SSL/TLS'
-    factor = 1
+    normalizer = BinaryStepNormalizer()
 
     def execute(self) -> int:
         """ Method execute analyzer and return a points """
-        result = 50
+        result = 0
         if self.url.scheme == 'https':
-            result = 100
+            result = 1
         elif self.url.scheme == 'http':
-            result = 20
+            result = 0
         return result
