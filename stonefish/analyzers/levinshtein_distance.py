@@ -22,14 +22,10 @@ class LevenshteinDistanceAnalyzer(BaseAnalyzer):
         with open('./stonefish/static/top-100000-domains', 'r') as file:
             trusted_domains = file.readlines()
             min_distance = lev.distance(self.url.hostname + '\n', trusted_domains[0])
-            dddd = trusted_domains[0]
             for domain in trusted_domains:
                 distance = lev.distance(self.url.hostname + '\n', domain)
                 if distance < min_distance:
                     min_distance = distance
-                    dddd = domain
-        import logging
-        logging.getLogger('__app__').info(f'Lev: {dddd}, {min_distance}')
         return min_distance
 
     @property
